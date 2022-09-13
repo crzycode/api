@@ -136,7 +136,7 @@ namespace api.Controllers
 
         }*/
         [HttpPost("upload")]
-        [RequestFormLimits(MultipartBodyLengthLimit = 1000000000000000000)]
+        [RequestFormLimits(MultipartBodyLengthLimit = 1000000000)]
         public IActionResult upload(List<IFormFile> file)
         {
             /*Guid id = Guid.NewGuid();*/
@@ -144,7 +144,7 @@ namespace api.Controllers
             Random rnd = new Random();
             var num = rnd.Next();
             var files = @"C:\xampp\htdocs\"+file[0];
-            var files2 = @"C:\xampp\htdocs\"+num;
+            var files2 = @"C:\xampp\htdocs\"+file[0].Name+"-"+num;
 
 
 
