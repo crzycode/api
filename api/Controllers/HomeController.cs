@@ -108,18 +108,19 @@ namespace api.Controllers
 
 
                 }*/
-        [HttpPost("upload")]
+       /* [HttpPost("upload2")]
+        [RequestFormLimits(MultipartBodyLengthLimit = 102345600000000000)]
         public IActionResult upload()
         {
             try
             {
                 var form = Request.Form;
-                foreach(var file in form.Files)
+                foreach (var file in form.Files)
                 {
-                    /* var path= Path.Combine(Directory.GetCurrentDirectory(), "C://Users//Beast//source//repos//api//api//Controllers//", file.FileName);*/
-                    var path = Path.Combine(env.ContentRootPath, "C://Users//Beast//source//repos//api//api//Controllers//", file.FileName);
-                    /*var path = Path.Combine(env.WebRootPath, "upload", file.FileName);*/
-                    using ( var stream = new FileStream(path, FileMode.Create))
+                    *//*var path = Path.Combine(Directory.GetCurrentDirectory(), "C://Users//Beast//source//repos//api//api//Controllers//", file.FileName);*//*
+                    var path = Path.Combine(env.ContentRootPath, "D://angular//", file.FileName);
+                   *//* var path = Path.Combine(env.WebRootPath, "upload", file.FileName);*//*
+                    using (var stream = new FileStream(path, FileMode.Create))
                     {
                         file.CopyTo(stream);
                     }
@@ -132,7 +133,46 @@ namespace api.Controllers
 
             }
             return Ok();
+
+        }*/
+        [HttpPost("upload")]
+        [RequestFormLimits(MultipartBodyLengthLimit = 1000000000000000000)]
+        public IActionResult upload(List<IFormFile> file)
+        {
+            /*Guid id = Guid.NewGuid();*/
+            /*DirectoryInfo dir = new DirectoryInfo(@"C:\xampp\htdocs\" + id);*/
+            Random rnd = new Random();
+            var num = rnd.Next();
+            var files = @"C:\xampp\htdocs\"+file[0];
+            var files2 = @"C:\xampp\htdocs\"+num;
+
+
+
+
+            string wwwpath = env.WebRootPath;
+            string path = Path.Combine(env.ContentRootPath, @"C:\xampp\htdocs\" + file[0]);
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
             
+
+            foreach (IFormFile f in file)
+            {
+                
+                string filename = Path.GetFileName(f.FileName);
+
+                using (FileStream stream = new FileStream(Path.Combine(path,filename), FileMode.Create))
+                {
+                    f.CopyTo(stream);
+                }
+                
+                
+            }
+            Directory.Move(files, files2);
+
+
+            return Ok();
         }
 
     }
